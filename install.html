@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pgmp extension installation &mdash; PostgreSQL Multiple Precision Arithmetic 1.0.2 documentation</title>
+    <title>pgmp extension installation &mdash; PostgreSQL Multiple Precision Arithmetic 1.0.3 documentation</title>
     
     <link rel="stylesheet" href="_static/pgmp.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.0.2',
+        VERSION:     '1.0.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=Accessible"></script>
-    <link rel="top" title="PostgreSQL Multiple Precision Arithmetic 1.0.2 documentation" href="index.html" />
+    <link rel="top" title="PostgreSQL Multiple Precision Arithmetic 1.0.3 documentation" href="index.html" />
     <link rel="next" title="mpz data type" href="mpz.html" />
     <link rel="prev" title="PostgreSQL Multiple Precision Arithmetic" href="index.html" /> 
   </head>
@@ -32,7 +32,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="index.html">PostgreSQL Multiple Precision Arithmetic 1.0.2 documentation</a></div>
+          href="index.html">PostgreSQL Multiple Precision Arithmetic 1.0.3 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="index.html" title="PostgreSQL Multiple Precision Arithmetic"
              accesskey="P">previous</a> |
@@ -67,12 +67,6 @@
 <a class="reference internal" href="mpz.html#randinit_mt" title="randinit_mt"><code class="xref py py-obj docutils literal"><span class="pre">randinit_mt()</span></code></a>) and the maximum base accepted by the I/O functions is
 36, not 62.</p>
 </div>
-</div>
-<div class="section" id="building-the-library">
-<h2>Building the library<a class="headerlink" href="#building-the-library" title="Permalink to this headline">¶</a></h2>
-<p>The library must be built and installed to be used with a database cluster:
-once it is built, SQL installation scripts can be used to install the data
-types and functions in one or more databases.</p>
 <p>In order to build the library your system must have the server development
 files (on Debian systems usually packaged as <code class="docutils literal"><span class="pre">postgresql-server-dev</span></code>) and
 regular UNIX development tools, such as <strong class="program">make</strong>. The
@@ -81,6 +75,23 @@ more than one PostgreSQL version is available on the system, the library will
 be built against the version of the first <strong class="program">pg_config</strong> found in the
 path. You may also override the selection specifying the <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal"><span class="pre">PG_CONFIG</span></code>
 variable.</p>
+</div>
+<div class="section" id="using-the-pgxn-client">
+<h2>Using the PGXN client<a class="headerlink" href="#using-the-pgxn-client" title="Permalink to this headline">¶</a></h2>
+<p>If the prerequsites are met you can use the <a class="reference external" href="https://dvarrazzo.github.io/pgxnclient/">PGXN Client</a> to download,
+build, and install <code class="xref py py-obj docutils literal"><span class="pre">pgmp</span></code>, e.g.:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pgxn install pgmp
+$ pgxn load -d somedb pgmp
+</pre></div>
+</div>
+<p>The further instructions are to build, test, and install the library without
+using the PGXN Client.</p>
+</div>
+<div class="section" id="building-the-library">
+<h2>Building the library<a class="headerlink" href="#building-the-library" title="Permalink to this headline">¶</a></h2>
+<p>The library must be built and installed to be used with a database cluster:
+once it is built, SQL installation scripts can be used to install the data
+types and functions in one or more databases.</p>
 <p>To build and install the library:</p>
 <div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> make
 <span class="gp">$</span> sudo make install
@@ -93,7 +104,7 @@ variable.</p>
 <p>(adjust the <span class="target" id="index-2"></span><code class="xref std std-envvar docutils literal"><span class="pre">REGRESS_OPTS</span></code> variable to select a test database).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Because of the missing function in GMP 4.1 (see <a class="reference internal" href="#prerequisites">Prerequisites</a>), a few
+<p class="last">Because of the missing functions in GMP 4.1 (see <a class="reference internal" href="#prerequisites">Prerequisites</a>), a few
 tests are expected to fail with this library version. After running the
 test suite you may check the <code class="docutils literal"><span class="pre">regression.diff</span></code> file to verify that the
 only tests failed are the ones related to the missing functionalities and
@@ -133,6 +144,7 @@ PostgreSQL extensions management.</p>
           <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href=""><code class="xref py py-obj docutils literal"><span class="pre">pgmp</span></code> extension installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-pgxn-client">Using the PGXN client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-the-library">Building the library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-the-extension">Installing the extension</a></li>
 </ul>
