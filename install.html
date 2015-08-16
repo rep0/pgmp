@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pgmp extension installation &mdash; PostgreSQL Multiple Precision Arithmetic 1.0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/pgmp.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=Accessible"></script>
+    <link rel="top" title="PostgreSQL Multiple Precision Arithmetic 1.0.2 documentation" href="index.html" />
+    <link rel="next" title="mpz data type" href="mpz.html" />
+    <link rel="prev" title="PostgreSQL Multiple Precision Arithmetic" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">PostgreSQL Multiple Precision Arithmetic 1.0.2 documentation</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="index.html" title="PostgreSQL Multiple Precision Arithmetic"
+             accesskey="P">previous</a> |
+          <a href="mpz.html" title="mpz data type"
+             accesskey="N">next</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pgmp-extension-installation">
+<h1><code class="xref py py-obj docutils literal"><span class="pre">pgmp</span></code> extension installation<a class="headerlink" href="#pgmp-extension-installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p><code class="xref py py-obj docutils literal"><span class="pre">pgmp</span></code> is currently compatible with:</p>
+<ul class="simple">
+<li>PostgreSQL from version 8.4</li>
+<li>GMP from version 4.1 (tested with versions 4.1.4, 4.2.4, 4.3.2 and 5.0.1)</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">GMP 4.1 doesn&#8217;t implement a few functions (<a class="reference internal" href="mpz.html#rootrem" title="rootrem"><code class="xref py py-obj docutils literal"><span class="pre">rootrem()</span></code></a>, <a class="reference internal" href="mpz.html#combit" title="combit"><code class="xref py py-obj docutils literal"><span class="pre">combit()</span></code></a>,
+<a class="reference internal" href="mpz.html#randinit_mt" title="randinit_mt"><code class="xref py py-obj docutils literal"><span class="pre">randinit_mt()</span></code></a>) and the maximum base accepted by the I/O functions is
+36, not 62.</p>
+</div>
+</div>
+<div class="section" id="building-the-library">
+<h2>Building the library<a class="headerlink" href="#building-the-library" title="Permalink to this headline">¶</a></h2>
+<p>The library must be built and installed to be used with a database cluster:
+once it is built, SQL installation scripts can be used to install the data
+types and functions in one or more databases.</p>
+<p>In order to build the library your system must have the server development
+files (on Debian systems usually packaged as <code class="docutils literal"><span class="pre">postgresql-server-dev</span></code>) and
+regular UNIX development tools, such as <strong class="program">make</strong>. The
+<strong class="program">pg_config</strong> program should be available in the <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">PATH</span></code>. If
+more than one PostgreSQL version is available on the system, the library will
+be built against the version of the first <strong class="program">pg_config</strong> found in the
+path. You may also override the selection specifying the <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal"><span class="pre">PG_CONFIG</span></code>
+variable.</p>
+<p>To build and install the library:</p>
+<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> make
+<span class="gp">$</span> sudo make install
+</pre></div>
+</div>
+<p>You can test the installation with:</p>
+<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> make installcheck
+</pre></div>
+</div>
+<p>(adjust the <span class="target" id="index-2"></span><code class="xref std std-envvar docutils literal"><span class="pre">REGRESS_OPTS</span></code> variable to select a test database).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Because of the missing function in GMP 4.1 (see <a class="reference internal" href="#prerequisites">Prerequisites</a>), a few
+tests are expected to fail with this library version. After running the
+test suite you may check the <code class="docutils literal"><span class="pre">regression.diff</span></code> file to verify that the
+only tests failed are the ones related to the missing functionalities and
+the different default random numbers gerenator algorithm.</p>
+</div>
+</div>
+<div class="section" id="installing-the-extension">
+<h2>Installing the extension<a class="headerlink" href="#installing-the-extension" title="Permalink to this headline">¶</a></h2>
+<p>With PostgreSQL versions before 9.1, an install script called <code class="docutils literal"><span class="pre">pgmp.sql</span></code> is
+installed in the directory <code class="samp docutils literal"><em><span class="pre">$sharedir</span></em><span class="pre">/pgmp</span></code>: just run the script into
+a database to install the provided types and functions. An uninstall script is
+also provided in the same directory to remove the installed objects.</p>
+<p>With PostgreSQL 9.1 the library is packaged as an extension: once built and
+installed in the cluster, use the command:</p>
+<div class="highlight-psql"><div class="highlight"><pre><span class="gp">=#</span> <span class="k">CREATE</span> <span class="k">EXTENSION</span> <span class="n">pgmp</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>to install it in a database. If your database was migrated from a previous
+PostgreSQL version, you can convert the <code class="xref py py-obj docutils literal"><span class="pre">pgmp</span></code> objects into a packaged
+extension using the command:</p>
+<div class="highlight-psql"><div class="highlight"><pre><span class="gp">=#</span> <span class="k">CREATE</span> <span class="k">EXTENSION</span> <span class="n">pgmp</span> <span class="k">FROM</span> <span class="n">unpackaged</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>In order to uninstall the extension you can use the <code class="docutils literal"><span class="pre">DROP</span> <span class="pre">EXTENSION</span></code>
+command. Please refer to <a class="reference external" href="http://developer.postgresql.org/pgdocs/postgres/extend-extensions.html">the documentation</a> for further informations about
+PostgreSQL extensions management.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href=""><code class="xref py py-obj docutils literal"><span class="pre">pgmp</span></code> extension installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-library">Building the library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-the-extension">Installing the extension</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mpz.html"><code class="xref py py-obj docutils literal"><span class="pre">mpz</span></code> data type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mpq.html"><code class="xref py py-obj docutils literal"><span class="pre">mpq</span></code> data type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous functions</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+            <p class="searchtip" style="font-size: 90%">
+                Enter search terms or a module, class or function name.
+            </p>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="index.html" title="PostgreSQL Multiple Precision Arithmetic"
+              >previous</a> |
+            <a href="mpz.html" title="mpz data type"
+              >next</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/install.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2011-2015, Daniele Varrazzo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,47 @@
+@import url("agogo.css");
+
+/* Tables */
+
+table.docutils {
+    border: 0;
+    border-collapse: collapse;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+table.docutils td, table.docutils th {
+    padding: 1px 8px 1px 5px;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #aaa;
+}
+
+table.docutils td {
+     text-align: left;
+}
+
+table.docutils th {
+     background-color; #eeeeec;
+}
+
+/* Less vertical margin around lists */
+html div.document ul {
+    margin: 0.5em 1.5em;
+}
+
+/* Less vertical spacing in the examples */
+div.highlight {
+    line-height: 1em;
+}
+
+/* The title justified is awful */
+div.body h1 {
+    text-align: left;
+    line-height: 100%;
+}
+
+/* definitions in bold */
+dl.goals dt {
+    font-weight: bold;
+}
