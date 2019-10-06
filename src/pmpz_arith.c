@@ -23,6 +23,7 @@
 #include "pgmp-impl.h"
 
 #include "fmgr.h"
+#include "utils/builtins.h"         /* for #include fmgrprotos.h */
 #include "funcapi.h"
 #include "access/hash.h"            /* for hash_any */
 #if PG_VERSION_NUM >= 90300
