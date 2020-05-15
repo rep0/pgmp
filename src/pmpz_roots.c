@@ -1,6 +1,6 @@
 /* pmpz_roots -- root extraction functions
  *
- * Copyright (C) 2011 Daniele Varrazzo
+ * Copyright (C) 2011-2020 Daniele Varrazzo
  *
  * This file is part of the PostgreSQL GMP Module
  *
@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with the PostgreSQL GMP Module.  If not, see
- * http://www.gnu.org/licenses/.
+ * https://www.gnu.org/licenses/.
  */
 
 #include "pmpz.h"
@@ -24,9 +24,7 @@
 
 #include "fmgr.h"
 #include "funcapi.h"
-#if PG_VERSION_NUM >= 90300
 #include <access/htup_details.h>    /* for heap_form_tuple */
-#endif
 
 
 /* Functions with a more generic signature are defined in pmpz.arith.c */

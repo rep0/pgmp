@@ -1,6 +1,6 @@
 /* pmpq_io -- mpq Input/Output functions
  *
- * Copyright (C) 2011 Daniele Varrazzo
+ * Copyright (C) 2011-2020 Daniele Varrazzo
  *
  * This file is part of the PostgreSQL GMP Module
  *
@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with the PostgreSQL GMP Module.  If not, see
- * http://www.gnu.org/licenses/.
+ * https://www.gnu.org/licenses/.
  */
 
 #include "pmpq.h"
@@ -330,7 +330,7 @@ PGMP_PG_FUNCTION(pmpq_to_numeric)
 {
     const mpq_t     q;
     int32           typmod;
-    unsigned long   scale;
+    long            scale;
     mpz_t           z;
     char            *buf;
     int             sbuf, snum;

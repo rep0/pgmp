@@ -1,6 +1,6 @@
 /* pmpz_agg -- mpz aggregation functions
  *
- * Copyright (C) 2011 Daniele Varrazzo
+ * Copyright (C) 2011-2020 Daniele Varrazzo
  *
  * This file is part of the PostgreSQL GMP Module
  *
@@ -16,11 +16,10 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with the PostgreSQL GMP Module.  If not, see
- * http://www.gnu.org/licenses/.
+ * https://www.gnu.org/licenses/.
  */
 
 #include "pmpz.h"
-#include "pgmp_utils.h"             /* for AggCheckCallContext on PG < 9.0 */
 #include "pgmp-impl.h"
 
 #include "fmgr.h"

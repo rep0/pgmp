@@ -1,6 +1,6 @@
 /* pmpz -- PostgreSQL data type for GMP mpz
  *
- * Copyright (C) 2011 Daniele Varrazzo
+ * Copyright (C) 2011-2020 Daniele Varrazzo
  *
  * This file is part of the PostgreSQL GMP Module
  *
@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with the PostgreSQL GMP Module.  If not, see
- * http://www.gnu.org/licenses/.
+ * https://www.gnu.org/licenses/.
  */
 
 #include "pmpz.h"
@@ -40,16 +40,16 @@ pmpz *
 pmpz_from_mpz(mpz_srcptr z)
 {
     pmpz *res;
-    int size = SIZ(z);
 
-    res = (pmpz *)((char *)LIMBS(z) - PMPZ_HDRSIZE);
-
-    if (LIKELY(0 != size))
+    if (LIKELY(ALLOC(z)))
     {
         size_t slimbs;
         int sign;
+        int size = SIZ(z);
 
-        if (size > 0) {
+        res = (pmpz *)((char *)LIMBS(z) - PMPZ_HDRSIZE);
+
+        if (size >= 0) {
             slimbs = size * sizeof(mp_limb_t);
             sign = 0;
         }
@@ -63,7 +63,8 @@ pmpz_from_mpz(mpz_srcptr z)
     }
     else
     {
-        /* In the zero representation there are no limbs */
+        /* No allocation for the limbs: allocate something of ours */
+        res = palloc(PMPZ_HDRSIZE);
         SET_VARSIZE(res, PMPZ_HDRSIZE);
         res->mdata = 0;             /* version: 0 */
     }

@@ -1,6 +1,6 @@
 /* pgmp -- PostgreSQL GMP module
  *
- * Copyright (C) 2011 Daniele Varrazzo
+ * Copyright (C) 2011-2020 Daniele Varrazzo
  *
  * This file is part of the PostgreSQL GMP Module
  *
@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with the PostgreSQL GMP Module.  If not, see
- * http://www.gnu.org/licenses/.
+ * https://www.gnu.org/licenses/.
  */
 
 #include <gmp.h>
@@ -24,6 +24,10 @@
 #include "fmgr.h"
 
 #include "pgmp-impl.h"
+
+#if PG_VERSION_NUM < 90400
+#error This pgmp version requires PostgreSQL 9.4 or above
+#endif
 
 PG_MODULE_MAGIC;
 

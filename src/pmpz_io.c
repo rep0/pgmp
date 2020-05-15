@@ -1,6 +1,6 @@
 /* pmpz_io -- mpz Input/Output functions
  *
- * Copyright (C) 2011 Daniele Varrazzo
+ * Copyright (C) 2011-2020 Daniele Varrazzo
  *
  * This file is part of the PostgreSQL GMP Module
  *
@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with the PostgreSQL GMP Module.  If not, see
- * http://www.gnu.org/licenses/.
+ * https://www.gnu.org/licenses/.
  */
 
 #include "pmpz.h"
@@ -122,7 +122,7 @@ PGMP_PG_FUNCTION(pmpz_out_base)
                 PGMP_MAXBASE_IO)));
     }
 
-    /* Allocate the output buffer manually - see mpmz_out to know why */
+    /* Allocate the output buffer manually - see pmpz_out to know why */
     buf = palloc(mpz_sizeinbase(z, ABS(base)) + 2);     /* add sign and null */
     PG_RETURN_CSTRING(mpz_get_str(buf, base, z));
 }

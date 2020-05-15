@@ -1,9 +1,9 @@
 -- Some functions to calculate pi digits using mpz integers.
 --
 -- Reference:
--- http://en.literateprograms.org/Pi_with_Machin%27s_formula_%28Python%29
+-- https://web.archive.org/web/20111211140154/http://en.literateprograms.org/Pi_with_Machin's_formula_(Python)
 --
--- Copyright (C) 2011 Daniele Varrazzo
+-- Copyright (C) 2011-2020 Daniele Varrazzo
 
 CREATE FUNCTION arccot(x mpz, unity mpz) RETURNS mpz
     LANGUAGE plpgsql IMMUTABLE STRICT

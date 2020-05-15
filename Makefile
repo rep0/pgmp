@@ -1,6 +1,6 @@
 # pgmp -- pgxs-based makefile
 #
-# Copyright (C) 2011 Daniele Varrazzo
+# Copyright (C) 2011-2020 Daniele Varrazzo
 #
 # This file is part of the PostgreSQL GMP Module
 #
@@ -16,7 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with the PostgreSQL GMP Module.  If not, see
-# http://www.gnu.org/licenses/.
+# https://www.gnu.org/licenses/.
 
 .PHONY: docs
 
@@ -33,32 +33,28 @@ MODULE_big = $(EXTENSION)
 
 EXT_LONGVER = $(shell grep '"version":' META.json | head -1 | sed -e 's/\s*"version":\s*"\(.*\)",/\1/')
 EXT_SHORTVER = $(shell grep 'default_version' $(EXTENSION).control | head -1 | sed -e "s/default_version\s*=\s'\(.*\)'/\1/")
-PG91 = $(shell $(PG_CONFIG) --version | grep -qE " 8\.| 9\.0" && echo pre91 || echo 91)
 
-SRC_C = $(wildcard src/*.c)
-SRC_H = $(wildcard src/*.h)
+SRC_C = $(sort $(wildcard src/*.c))
+SRC_H = $(sort $(wildcard src/*.h))
 SRCFILES = $(SRC_C) $(SRC_H)
 OBJS = $(patsubst %.c,%.o,$(SRC_C))
-TESTFILES = $(wildcard test/sql/*.sql) $(wildcard test/expected/*.out)
-DOCS = $(wildcard docs/*.rst) docs/conf.py docs/Makefile docs/_static/pgmp.css
+TESTFILES = $(sort $(wildcard test/sql/*.sql) $(wildcard test/expected/*.out))
+BENCHFILES = $(sort $(wildcard bench/*.py) $(wildcard bench/*.txt))
+DOCFILES = $(sort $(wildcard docs/*.rst))
+TOOLSFILES = $(sort $(wildcard tools/*.py))
 
-PKGFILES = AUTHORS COPYING README.rst Makefile \
-	META.json pgmp.control \
+PKGFILES = $(SRCFILES) $(DOCFILES) $(TESTFILES) $(BENCHFILES) $(TOOLSFILES) \
+	AUTHORS COPYING README.rst Makefile META.json pgmp.control \
 	sql/pgmp.pysql sql/uninstall_pgmp.sql \
-	$(SRCFILES) $(DOCS) $(TESTFILES) \
-	$(wildcard tools/*.py)
+	docs/conf.py docs/Makefile docs/_static/pgmp.css \
+	docs/html-gitignore docs/requirements.txt
 
-ifeq ($(PG91),91)
 INSTALLSCRIPT=sql/pgmp--$(EXT_SHORTVER).sql
 UPGRADESCRIPT=sql/pgmp--unpackaged--$(EXT_SHORTVER).sql
 DATA = $(INSTALLSCRIPT) $(UPGRADESCRIPT)
-else
-INSTALLSCRIPT=sql/pgmp.sql
-DATA = $(INSTALLSCRIPT) sql/uninstall_pgmp.sql
-endif
 
 # the += doesn't work if the user specified his own REGRESS_OPTS
-REGRESS = --inputdir=test setup-$(PG91) mpz mpq
+REGRESS = --inputdir=test setup mpz mpq
 EXTRA_CLEAN = $(INSTALLSCRIPT) $(UPGRADESCRIPT)
 
 PKGNAME = pgmp-$(EXT_LONGVER)
@@ -92,7 +88,3 @@ $(SRCPKG): $(PKGFILES)
 	rm -f $(SRCPKG_ZIP)
 	zip -r $(SRCPKG_ZIP) $(addprefix $(PKGNAME)/,$^)
 	rm $(PKGNAME)
-
-# Required for testing in pgxn client on PG < 9.1
-installcheck: $(INSTALLSCRIPT)
-
